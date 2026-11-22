@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BusinessTrack</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            Business<span>Track</span>
+            <small>Business Management</small>
+        </div>
+
+        <nav>
+
+            <button
+                type="button"
+                class="nav-btn active"
+                onclick="showSection('dashboard', this)">
+                <span>📊</span>
+                Dashboard
+            </button>
+
+            <button
+                type="button"
+                class="nav-btn"
+                onclick="showSection('products', this)">
+                <span>📦</span>
+                Products
+            </button>
+
+            <button
+                type="button"
+                class="nav-btn"
+                onclick="showSection('sales', this)">
+                <span>💰</span>
+                Sales
+            </button>
+
+            <button
+                type="button"
+                class="nav-btn"
+                onclick="showSection('expenses', this)">
+                <span>💸</span>
+                Expenses
+            </button>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <span class="status-dot"></span>
+            System Online
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section id="dashboard" class="section active">
+
+            <div class="topbar">
+
+                <div>
+
+                    <div class="page-label">
+                        OVERVIEW
+                    </div>
+
+                    <h2>Dashboard</h2>
+
+                    <p>
+                        Here's what's happening with your business.
+                    </p>
+
+                </div>
+
+                <div
+                    id="dashboardDate"
+                    class="dashboard-date">
+                </div>
+
+            </div>
+
+
+            <!-- DASHBOARD CARDS -->
+
+            <div class="dashboard-cards">
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        📦
+                    </div>
+
+                    <div>
+                        <p>Total Products</p>
+
+                        <h3 id="totalProducts">
+                            0
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        📊
+                    </div>
+
+                    <div>
+                        <p>Total Stock</p>
+
+                        <h3 id="totalStock">
+                            0
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        💰
+                    </div>
+
+                    <div>
+                        <p>Total Revenue</p>
+
+                        <h3 id="dashboardRevenue">
+                            ₹0.00
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        📈
+                    </div>
+
+                    <div>
+                        <p>Net Profit</p>
+
+                        <h3 id="dashboardProfit">
+                            ₹0.00
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        💸
+                    </div>
+
+                    <div>
+                        <p>Total Expenses</p>
+
+                        <h3 id="dashboardExpenses">
+                            ₹0.00
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        🏷️
+                    </div>
+
+                    <div>
+                        <p>Inventory Value</p>
+
+                        <h3 id="inventoryValue">
+                            ₹0.00
+                        </h3>
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-icon">
+                        ⚠️
+                    </div>
+
+                    <div>
+                        <p>Low Stock</p>
+
+                        <h3 id="lowStock">
+                            0
+                        </h3>
+                    </div>
+
+                </div>
+
+            </div>
+            
+            <!-- FINANCIAL CHART -->
+
+                <div class="dashboard-box financial-chart-box">
+
+               
+                <div class="box-header">
+                    <div>
+                        <h3>Financial Overview</h3>
+                        <p>Revenue, expenses, and profit comparison</p>
+                    </div>
+
+                    <span class="chart-badget">All Time</span>
+                </div>
+
+                <div class="financial-chart-container">
+                    <canvas id="financialChart"></canvas>
+                </div>
+            </div>
+
+            <button onclick="exportBackup()">
+                Export Backup
+            </button>
+
+            <input
+                type="file"
+                id="backupFile"
+                accept=".json,application/json"
+                onchange="importBackup(event)"
+            >
+
+            <label for="backupFile">
+                Import Backup
+            </label>
+
+            <!-- DASHBOARD LOWER AREA -->
+
+            <div class="dashboard-grid">
+
+
+                <!-- RECENT PRODUCTS -->
+
+                <div class="dashboard-box">
+
+                    <div class="box-header">
+
+                        <div>
+
+                            <h3>
+                                Recent Products
+                            </h3>
+
+                            <p>
+                                Recently added inventory
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div id="recentProducts">
+                    </div>
+
+                </div>
+
+
+                <!-- INVENTORY STATUS -->
+
+                <div class="dashboard-box">
+
+                    <div class="box-header">
+
+                        <div>
+
+                            <h3>
+                                Inventory Status
+                            </h3>
+
+                            <p>
+                                Current stock condition
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="inventory-status">
+
+
+                        <div class="status-row">
+
+                            <span class="status-indicator healthy"></span>
+
+                            <span>
+                                Healthy Stock
+                            </span>
+
+                            <strong id="healthyStock">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="status-row">
+
+                            <span class="status-indicator warning"></span>
+
+                            <span>
+                                Low Stock
+                            </span>
+
+                            <strong id="dashboardLowStock">
+                                0
+                            </strong>
+
+                        </div>
+
+
+                        <div class="status-row">
+
+                            <span class="status-indicator danger"></span>
+
+                            <span>
+                                Out of Stock
+                            </span>
+
+                            <strong id="outOfStock">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= PRODUCTS ================= -->
+
+        <section id="products" class="section">
+
+            <div class="topbar">
+
+                <div>
+
+                    <div class="page-label">
+                        INVENTORY
+                    </div>
+
+                    <h2>
+                        Products
+                    </h2>
+
+                    <p>
+                        Manage your products and inventory.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="primary-btn"
+                    onclick="openProductForm()">
+
+                    + Add Product
+
+                </button>
+
+            </div>
+
+
+            <!-- PRODUCT FORM -->
+
+            <div
+                id="productForm"
+                class="form-box hidden">
+
+                <h3>
+                    Add New Product
+                </h3>
+
+
+                <div class="form-grid">
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Product Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productName"
+                            placeholder="Product name">
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            SKU
+                        </label>
+
+                        <input
+                            type="text"
+                            id="productSKU"
+                            placeholder="SKU">
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Buy Price
+                        </label>
+
+                        <input
+                            type="number"
+                            id="buyPrice"
+                            placeholder="0.00"
+                            min="0">
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Sell Price
+                        </label>
+
+                        <input
+                            type="number"
+                            id="sellPrice"
+                            placeholder="0.00"
+                            min="0">
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Stock
+                        </label>
+
+                        <input
+                            type="number"
+                            id="stock"
+                            placeholder="0"
+                            min="0">
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Supplier
+                        </label>
+
+                        <input
+                            type="text"
+                            id="supplier"
+                            placeholder="Supplier">
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="primary-btn"
+                        onclick="addProduct()">
+
+                        Add Product
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="secondary-btn"
+                        onclick="closeProductForm()">
+
+                        Cancel
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCT TABLE -->
+
+            <div class="table-box">
+
+                <div class="table-header">
+
+                    <div>
+
+                        <h3>
+                            Product Inventory
+                        </h3>
+
+                        <p>
+                            All products in your inventory
+                        </p>
+
+                    </div>
+
+
+                    <input
+                        type="text"
+                        id="searchProduct"
+                        placeholder="Search products..."
+                        oninput="displayProducts()">
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Product</th>
+
+                                <th>SKU</th>
+
+                                <th>Buy Price</th>
+
+                                <th>Sell Price</th>
+
+                                <th>Stock</th>
+
+                                <th>Supplier</th>
+
+                                <th>Action</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="productTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= SALES ================= -->
+
+        <section id="sales" class="section">
+
+            <div class="topbar">
+
+                <div>
+
+                    <div class="page-label">
+                        TRANSACTIONS
+                    </div>
+
+                    <h2>
+                        Sales
+                    </h2>
+
+                    <p>
+                        Record and track your business sales.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="primary-btn"
+                    onclick="openSaleForm()">
+
+                    + New Sale
+
+                </button>
+
+            </div>
+
+
+            <!-- SALES CARDS -->
+
+            <div class="sales-cards">
+
+
+                <div class="sales-card">
+
+                    <div class="sales-card-icon">
+                        💰
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Total Sales
+                        </p>
+
+                        <h3 id="totalSales">
+                            ₹0.00
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sales-card">
+
+                    <div class="sales-card-icon">
+                        🧾
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Transactions
+                        </p>
+
+                        <h3 id="totalTransactions">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="sales-card">
+
+                    <div class="sales-card-icon">
+                        📦
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Units Sold
+                        </p>
+
+                        <h3 id="totalUnitsSold">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SALE FORM -->
+
+            <div
+                id="saleForm"
+                class="form-box hidden">
+
+                <h3>
+                    Record New Sale
+                </h3>
+
+
+                <div class="form-grid">
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Product
+                        </label>
+
+                        <select id="saleProduct">
+
+                            <option value="">
+                                Select a product
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Quantity
+                        </label>
+
+                        <input
+                            type="number"
+                            id="saleQuantity"
+                            placeholder="0"
+                            min="1">
+
+                    </div>
+
+                </div>
+
+
+                <div class="sale-preview">
+
+                    <div>
+
+                        <span>
+                            Unit Price
+                        </span>
+
+                        <strong id="saleUnitPrice">
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Sale Total
+                        </span>
+
+                        <strong id="saleTotal">
+                            ₹0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="primary-btn"
+                        onclick="addSale()">
+
+                        Record Sale
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="secondary-btn"
+                        onclick="closeSaleForm()">
+
+                        Cancel
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- SALES HISTORY -->
+
+            <div class="table-box">
+
+                <div class="table-header">
+
+                    <div>
+
+                        <h3>
+                            Sales History
+                        </h3>
+
+                        <p>
+                            Recent business transactions
+                        </p>
+
+                    </div>
+
+
+                    <input
+                        type="text"
+                        id="searchSale"
+                        placeholder="Search sales..."
+                        oninput="displaySales()">
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Product
+                                </th>
+
+                                <th>
+                                    Quantity
+                                </th>
+
+                                <th>
+                                    Unit Price
+                                </th>
+
+                                <th>
+                                    Total
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="salesTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= EXPENSES ================= -->
+
+        <section id="expenses" class="section">
+
+            <div class="topbar">
+
+                <div>
+
+                    <div class="page-label">
+                        FINANCE
+                    </div>
+
+                    <h2>
+                        Expenses
+                    </h2>
+
+                    <p>
+                        Track and manage your business expenses.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="primary-btn"
+                    onclick="openExpenseForm()">
+
+                    + New Expense
+
+                </button>
+
+            </div>
+
+
+            <!-- EXPENSE CARDS -->
+
+            <div class="expense-cards">
+
+
+                <div class="expense-card">
+
+                    <div class="expense-card-icon">
+                        💸
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Total Expenses
+                        </p>
+
+                        <h3 id="totalExpenses">
+                            ₹0.00
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="expense-card">
+
+                    <div class="expense-card-icon">
+                        📋
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Total Transactions
+                        </p>
+
+                        <h3 id="totalExpenseTransactions">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="expense-card">
+
+                    <div class="expense-card-icon">
+                        📊
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Average Expense
+                        </p>
+
+                        <h3 id="averageExpense">
+                            ₹0.00
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EXPENSE FORM -->
+
+            <div
+                id="expenseForm"
+                class="form-box hidden">
+
+                <h3>
+                    Add New Expense
+                </h3>
+
+
+                <div class="form-grid">
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Expense Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="expenseName"
+                            placeholder="e.g. Electricity">
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Category
+                        </label>
+
+                        <select id="expenseCategory">
+
+                            <option value="">
+                                Select category
+                            </option>
+
+                            <option value="Rent">
+                                Rent
+                            </option>
+
+                            <option value="Utilities">
+                                Utilities
+                            </option>
+
+                            <option value="Salary">
+                                Salary
+                            </option>
+
+                            <option value="Transport">
+                                Transport
+                            </option>
+
+                            <option value="Marketing">
+                                Marketing
+                            </option>
+
+                            <option value="Supplies">
+                                Supplies
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            id="expenseAmount"
+                            placeholder="0.00"
+                            min="0"
+                            step="0.01">
+
+                    </div>
+
+
+                    <div class="input-group">
+
+                        <label>
+                            Description
+                        </label>
+
+                        <input
+                            type="text"
+                            id="expenseDescription"
+                            placeholder="Optional description">
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        type="button"
+                        class="primary-btn"
+                        onclick="addExpense()">
+
+                        Record Expense
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="secondary-btn"
+                        onclick="closeExpenseForm()">
+
+                        Cancel
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- EXPENSE HISTORY -->
+
+            <div class="table-box">
+
+                <div class="table-header">
+
+                    <div>
+
+                        <h3>
+                            Expense History
+                        </h3>
+
+                        <p>
+                            Recent business expenses
+                        </p>
+
+                    </div>
+
+
+                    <input
+                        type="text"
+                        id="searchExpense"
+                        placeholder="Search expenses..."
+                        oninput="displayExpenses()">
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Expense
+                                </th>
+
+                                <th>
+                                    Category
+                                </th>
+
+                                <th>
+                                    Amount
+                                </th>
+
+                                <th>
+                                    Description
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="expenseTable">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
